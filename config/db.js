@@ -2,16 +2,19 @@ const mongoose = require('mongoose');
 const config = require('config');
 const db =  config.get('mongoURI');
 
-const connectDB = () => {
-	mongoose.connect(db, {
-	useNewUrlParser: true
-	})
+const connectDB = async () => {
 
-.then ( () => console.log('MongoDB Connected'))
-  .catch(err => {
+	try {
+	await mongoose.connect(db, {
+	useNewUrlParser: true
+	});
+
+	console.log("Mongo Database Connected");
+	}
+	catch (err) {
 	console.error(err.message);
 	process.exit(1);
-	});
+	}
 
 };
 
