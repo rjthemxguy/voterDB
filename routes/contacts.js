@@ -83,6 +83,7 @@ router.put('/:id',auth, async (req,res) => {
     if(phone) contactFields.phone = phone;
     if(type) contactFields.type = type;
 
+    
     try {
 
         // Get contact
@@ -102,6 +103,8 @@ router.put('/:id',auth, async (req,res) => {
             {$set: contactFields},
             {new: true}
         );
+
+        res.send(contact);
 
     } catch (err) {
         console.error(err.message);
