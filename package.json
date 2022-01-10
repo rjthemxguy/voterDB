@@ -1,7 +1,7 @@
 {
   "name": "crm",
   "version": "1.0.0",
-  "description": "Voter Project",
+  "description": "County Voter Project",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
