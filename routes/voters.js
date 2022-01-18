@@ -1,8 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const {check, validationResult} = require('express-validator/check');
-const User = require('../models/User');
-const Contact = require('../models/Contact');
+const Voter = require('../models/Voters')
 const auth = require("../middleware/auth"); 
 
 
@@ -11,17 +10,44 @@ const auth = require("../middleware/auth");
 // @desc        Get all users contacts
 // @access      Private
 
-router.get('/', auth, async(req,res) => {
+router.get('/', async(req,res) => {
 
+    let last = req.query.last;
+    let first = req.query.first;
+    let street = req.query.street;
+    let house = req.query.house;
+   
+
+    console.log(first);
+    
+    var query ={};
+
+    if(last !== "") {
+        query["szNameLast"] = last;
+    }
+
+    if(first !== "") {
+        query["szNameFirst"] = first;
+    }
+
+    if(street !== "") {
+        query["szStreetName"] = street;
+    }
+
+    if(house !== "") {
+        query["sHouseNum"] = house;
+    }
+
+    console.log(query);
     try {
-        // Find contacts based on USER ID in token
-        const contacts = await Contact.find({user: req.user.id}).sort({date: -1});
+        // Find voters
+        const voters = await Voter.find(query).sort({szStreetName:1});
         // Send contact back in JSON
-        res.json(contacts);
+        res.json(voters);
 
     } catch (err) {
         console.error(err.message);
-        res.status(500).send('Server Error Getting Contacts');
+        res.status(500).send('Server Error Getting Voters');
 
     }
 
