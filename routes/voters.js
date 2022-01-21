@@ -16,7 +16,7 @@ router.get('/', async(req,res) => {
     let first = req.query.first;
     let street = req.query.street;
     let house = req.query.house;
-   
+    let city = req.query.city;
 
     console.log(first);
     
@@ -36,6 +36,10 @@ router.get('/', async(req,res) => {
 
     if(house !== "") {
         query["sHouseNum"] = house;
+    }
+
+    if(city !== "") {
+        query["szSitusCity"] = city;
     }
 
     console.log(query);
