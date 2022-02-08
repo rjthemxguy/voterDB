@@ -30,7 +30,7 @@ async (req,res) => {
 		}
 
 		// Get info from req.body
-		const {name, email, password} = req.body;
+		const {name, email, password, isActive, isAdmin, county} = req.body;
 
 		try {
 
@@ -46,7 +46,10 @@ async (req,res) => {
 			 user = new User ({
 				 name,
 				 email,
-				 password
+				 password,
+				 isActive,
+				 isAdmin,
+				 county
 			 });
 
 			 // Create salt
@@ -76,13 +79,71 @@ async (req,res) => {
 
 		} catch (err) {
 			console.error(err.message);
-			res.status(500).send("Server Error");
+			res.status(500).send("Register Server Error: " + err.message);
 		}
 
 	}
 
 );
 
+router.get('/', async(req,res) => {
+
+   
+    try {
+        // Get Users
+        const users = await User.find();
+        // Send contact back in JSON
+        res.json(users);
+
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error Getting Users');
+
+    }
+
+});
+
+// @route       PUT    api/users/:id 
+// @desc        Update User
+// @access      Private
+
+router.put('/:id', async (req,res) => {
+
+    const {name, email, password, isActive, isAdmin, county} = req.body;
+
+    // Build contact based on changed fields
+    const userFields = {};
+
+    if(name) userFields.name = name;
+    if(email) userFields.email = email;
+    userFields.isActive = isActive;
+    if(isAdmin) userFields.isAdmin = isAdmin;
+	if(county) userFields.county = county;
+    
+    try {
+
+        // Get user
+        let user = await User.findById(req.params.id);
+
+        // Does it exist
+        if(!user) return res.status(404).json({msg:"Update User not found"});
+
+
+        // Update contact
+        user = await User.findByIdAndUpdate(
+            req.params.id,
+            {$set: userFields},
+            {new: true}
+        );
+
+        res.send(user);
+
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error in User Update: ' + err.message);
+    }
+
+});
 
 module.exports = router;
 

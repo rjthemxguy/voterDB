@@ -26,7 +26,9 @@ const VoterSchema = mongoose.Schema ({
     szSitusCity: {
         type:String
     
-                }
+    }
+
+   
 });
 
 module.exports =  mongoose.model('voter',VoterSchema);

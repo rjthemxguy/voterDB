@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const UserSchema = mongoose.Schema ({
+       
 	name: {
 		type:String,
 		required: true
@@ -17,7 +18,18 @@ const UserSchema = mongoose.Schema ({
 	 date: {
                 type:Date,
                 default: Date.now
-                }
+                },
+        isAdmin: {
+                type: Boolean
+        },
+
+        isActive: {
+                type:Boolean
+        },
+
+        county: {
+                type: String
+        }
 });
 
 module.exports =  mongoose.model('user',UserSchema);
